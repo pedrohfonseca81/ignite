@@ -3,7 +3,7 @@ defmodule Ignite.Flow do
   alias Ignite.Api.Telemetry
   import Ignite.Worker
 
-  @callback ignite() :: %Ignite.Response{}
+  @callback ignite() :: %Ignite.Response{} | any()
 
   @optional_callbacks ignite: 0
 
@@ -119,7 +119,6 @@ defmodule Ignite.Flow do
         Telemetry.send_start_task(task)
 
         unquote(block)
-        |> Telemetry.send_end_task(task)
       end
     end
   end
