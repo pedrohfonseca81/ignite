@@ -1,4 +1,3 @@
-
 defmodule Ignite.FlowTest do
   defmodule Flow do
     use Ignite.Flow
@@ -36,5 +35,10 @@ defmodule Ignite.FlowTest do
 
   test "using deftaskp from deftask works" do
     assert Flow.using_private() == :shhh
+  end
+
+  test "spec is ok" do
+    assert Flow.spec().module == Flow
+    assert Flow.spec().name == Flow |> Module.split() |> List.last()
   end
 end
