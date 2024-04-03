@@ -6,8 +6,8 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :ignite_server, Ignite.Server.Repo,
-  username: "postgres",
-  password: "postgres",
+  username: "ignite",
+  password: "ignite123",
   hostname: "localhost",
   database: "ignite_server_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
