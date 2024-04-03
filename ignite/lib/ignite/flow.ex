@@ -100,11 +100,15 @@ defmodule Ignite.Flow do
   end
 
   defp define_task(kind, call, block) do
-    {name, _position, _} = call
+    {name, position, args} = call
+
+    arity = args |> length
 
     quote do
       unquote(__MODULE__).__define__(__MODULE__, :tasks, %Task{
         name: to_string(unquote(name)),
+        position: unquote(position),
+        arity: unquote(arity),
         as: unquote(name),
         kind: unquote(kind)
       })
@@ -112,6 +116,8 @@ defmodule Ignite.Flow do
       unquote(kind)(unquote(call)) do
         task = %Task{
           name: to_string(unquote(name)),
+          position: unquote(position),
+          arity: unquote(arity),
           as: unquote(name),
           kind: unquote(kind)
         }

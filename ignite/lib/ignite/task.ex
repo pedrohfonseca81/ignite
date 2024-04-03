@@ -2,6 +2,8 @@ defmodule Ignite.Task do
   defstruct [
     :name,
     :as,
-    :kind
+    :kind,
+    :arity,
+    :position
   ]
 end
