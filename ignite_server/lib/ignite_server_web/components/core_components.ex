@@ -316,7 +316,7 @@ defmodule Ignite.ServerWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-white focus:ring-0"
+          class="rounded bg-transparent form-checkbox text-red-700 border-red-700 focus:ring-0"
           {@rest}
         />
         <%= @label %>

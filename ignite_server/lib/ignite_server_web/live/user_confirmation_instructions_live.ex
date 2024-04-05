@@ -32,8 +32,8 @@ defmodule Ignite.ServerWeb.UserConfirmationInstructionsLive do
     {:ok, assign(socket, form: to_form(%{}, as: "user"))}
   end
 
-  def handle_event("send_instructions", %{"user" => %{"email" => email}}, socket) do
-    if user = Accounts.get_user_by_email(email) do
+  def handle_event("send_instructions", %{"user" => %{"username" => username}}, socket) do
+    if user = Accounts.get_user_by_username(username) do
       Accounts.deliver_user_confirmation_instructions(
         user,
         &url(~p"/users/confirm/#{&1}")

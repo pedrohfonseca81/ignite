@@ -7,10 +7,10 @@ defmodule Ignite.Server.Accounts.UserToken do
   @rand_size 32
 
   # It is very important to keep the reset password token expiry short,
-  # since someone with access to the email may take over the account.
+  # since someone with access to the username may take over the account.
   @reset_password_validity_in_days 1
   @confirm_validity_in_days 7
-  @change_email_validity_in_days 7
+  @change_username_validity_in_days 7
   @session_validity_in_days 60
 
   schema "users_tokens" do
@@ -65,20 +65,20 @@ defmodule Ignite.Server.Accounts.UserToken do
   end
 
   @doc """
-  Builds a token and its hash to be delivered to the user's email.
+  Builds a token and its hash to be delivered to the user's username.
 
-  The non-hashed token is sent to the user email while the
+  The non-hashed token is sent to the user username while the
   hashed part is stored in the database. The original token cannot be reconstructed,
   which means anyone with read-only access to the database cannot directly use
   the token in the application to gain access. Furthermore, if the user changes
-  their email in the system, the tokens sent to the previous email are no longer
+  their username in the system, the tokens sent to the previous username are no longer
   valid.
 
   Users can easily adapt the existing code to provide other types of delivery methods,
   for example, by phone numbers.
   """
-  def build_email_token(user, context) do
-    build_hashed_token(user, context, user.email)
+  def build_username_token(user, context) do
+    build_hashed_token(user, context, user.username)
   end
 
   defp build_hashed_token(user, context, sent_to) do
@@ -100,14 +100,14 @@ defmodule Ignite.Server.Accounts.UserToken do
   The query returns the user found by the token, if any.
 
   The given token is valid if it matches its hashed counterpart in the
-  database and the user email has not changed. This function also checks
+  database and the user username has not changed. This function also checks
   if the token is being used within a certain period, depending on the
   context. The default contexts supported by this function are either
-  "confirm", for account confirmation emails, and "reset_password",
-  for resetting the password. For verifying requests to change the email,
-  see `verify_change_email_token_query/2`.
+  "confirm", for account confirmation usernames, and "reset_password",
+  for resetting the password. For verifying requests to change the username,
+  see `verify_change_username_token_query/2`.
   """
-  def verify_email_token_query(token, context) do
+  def verify_username_token_query(token, context) do
     case Base.url_decode64(token, padding: false) do
       {:ok, decoded_token} ->
         hashed_token = :crypto.hash(@hash_algorithm, decoded_token)
@@ -116,7 +116,7 @@ defmodule Ignite.Server.Accounts.UserToken do
         query =
           from token in by_token_and_context_query(hashed_token, context),
             join: user in assoc(token, :user),
-            where: token.inserted_at > ago(^days, "day") and token.sent_to == user.email,
+            where: token.inserted_at > ago(^days, "day") and token.sent_to == user.username,
             select: user
 
         {:ok, query}
@@ -135,22 +135,22 @@ defmodule Ignite.Server.Accounts.UserToken do
   The query returns the user found by the token, if any.
 
   This is used to validate requests to change the user
-  email. It is different from `verify_email_token_query/2` precisely because
-  `verify_email_token_query/2` validates the email has not changed, which is
+  username. It is different from `verify_username_token_query/2` precisely because
+  `verify_username_token_query/2` validates the username has not changed, which is
   the starting point by this function.
 
   The given token is valid if it matches its hashed counterpart in the
-  database and if it has not expired (after @change_email_validity_in_days).
+  database and if it has not expired (after @change_username_validity_in_days).
   The context must always start with "change:".
   """
-  def verify_change_email_token_query(token, "change:" <> _ = context) do
+  def verify_change_username_token_query(token, "change:" <> _ = context) do
     case Base.url_decode64(token, padding: false) do
       {:ok, decoded_token} ->
         hashed_token = :crypto.hash(@hash_algorithm, decoded_token)
 
         query =
           from token in by_token_and_context_query(hashed_token, context),
-            where: token.inserted_at > ago(@change_email_validity_in_days, "day")
+            where: token.inserted_at > ago(@change_username_validity_in_days, "day")
 
         {:ok, query}
 

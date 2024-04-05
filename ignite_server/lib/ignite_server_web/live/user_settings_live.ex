@@ -7,29 +7,29 @@ defmodule Ignite.ServerWeb.UserSettingsLive do
     ~H"""
     <.header class="text-center">
       Account Settings
-      <:subtitle>Manage your account email address and password settings</:subtitle>
+      <:subtitle>Manage your account username address and password settings</:subtitle>
     </.header>
 
     <div class="space-y-12">
       <div>
         <.simple_form
-          for={@email_form}
-          id="email_form"
-          phx-submit="update_email"
-          phx-change="validate_email"
+          for={@username_form}
+          id="username_form"
+          phx-submit="update_username"
+          phx-change="validate_username"
         >
-          <.input field={@email_form[:email]} type="email" label="Email" required />
+          <.input field={@username_form[:username]} label="username" required />
           <.input
-            field={@email_form[:current_password]}
+            field={@username_form[:current_password]}
             name="current_password"
-            id="current_password_for_email"
+            id="current_password_for_username"
             type="password"
             label="Current password"
-            value={@email_form_current_password}
+            value={@username_form_current_password}
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change Email</.button>
+            <.button phx-disable-with="Changing...">Change username</.button>
           </:actions>
         </.simple_form>
       </div>
@@ -44,10 +44,10 @@ defmodule Ignite.ServerWeb.UserSettingsLive do
           phx-trigger-action={@trigger_submit}
         >
           <.input
-            field={@password_form[:email]}
+            field={@password_form[:username]}
             type="hidden"
-            id="hidden_user_email"
-            value={@current_email}
+            id="hidden_user_username"
+            value={@current_username}
           />
           <.input field={@password_form[:password]} type="password" label="New password" required />
           <.input
@@ -75,12 +75,12 @@ defmodule Ignite.ServerWeb.UserSettingsLive do
 
   def mount(%{"token" => token}, _session, socket) do
     socket =
-      case Accounts.update_user_email(socket.assigns.current_user, token) do
+      case Accounts.update_user_username(socket.assigns.current_user, token) do
         :ok ->
-          put_flash(socket, :info, "Email changed successfully.")
+          put_flash(socket, :info, "Username changed successfully.")
 
         :error ->
-          put_flash(socket, :error, "Email change link is invalid or it has expired.")
+          put_flash(socket, :error, "Username change link is invalid or it has expired.")
       end
 
     {:ok, push_navigate(socket, to: ~p"/users/settings")}
@@ -88,50 +88,50 @@ defmodule Ignite.ServerWeb.UserSettingsLive do
 
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
-    email_changeset = Accounts.change_user_email(user)
+    username_changeset = Accounts.change_user_username(user)
     password_changeset = Accounts.change_user_password(user)
 
     socket =
       socket
       |> assign(:current_password, nil)
-      |> assign(:email_form_current_password, nil)
-      |> assign(:current_email, user.email)
-      |> assign(:email_form, to_form(email_changeset))
+      |> assign(:username_form_current_password, nil)
+      |> assign(:current_username, user.username)
+      |> assign(:username_form, to_form(username_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:trigger_submit, false)
 
     {:ok, socket}
   end
 
-  def handle_event("validate_email", params, socket) do
+  def handle_event("validate_username", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
 
-    email_form =
+    username_form =
       socket.assigns.current_user
-      |> Accounts.change_user_email(user_params)
+      |> Accounts.change_user_username(user_params)
       |> Map.put(:action, :validate)
       |> to_form()
 
-    {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
+    {:noreply, assign(socket, username_form: username_form, username_form_current_password: password)}
   end
 
-  def handle_event("update_email", params, socket) do
+  def handle_event("update_username", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
     user = socket.assigns.current_user
 
-    case Accounts.apply_user_email(user, password, user_params) do
+    case Accounts.apply_user_username(user, password, user_params) do
       {:ok, applied_user} ->
-        Accounts.deliver_user_update_email_instructions(
+        Accounts.deliver_user_update_username_instructions(
           applied_user,
-          user.email,
-          &url(~p"/users/settings/confirm_email/#{&1}")
+          user.username,
+          &url(~p"/users/settings/confirm_username/#{&1}")
         )
 
-        info = "A link to confirm your email change has been sent to the new address."
-        {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
+        info = "A link to confirm your username change has been sent to the new address."
+        {:noreply, socket |> put_flash(:info, info) |> assign(username_form_current_password: nil)}
 
       {:error, changeset} ->
-        {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}
+        {:noreply, assign(socket, :username_form, to_form(Map.put(changeset, :action, :insert)))}
     end
   end
 
