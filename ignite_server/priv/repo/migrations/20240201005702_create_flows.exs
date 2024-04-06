@@ -3,7 +3,6 @@ defmodule Ignite.Server.Repo.Migrations.CreateFlows do
 
   def change do
     create table(:flows) do
-
       timestamps(type: :utc_datetime)
     end
   end

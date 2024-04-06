@@ -3,8 +3,6 @@ defmodule Ignite.Server.Flow do
   import Ecto.Changeset
 
   schema "flows" do
-
-
     timestamps(type: :utc_datetime)
   end
 

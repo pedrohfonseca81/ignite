@@ -3,8 +3,6 @@ defmodule Ignite.Server.Task do
   import Ecto.Changeset
 
   schema "tasks" do
-
-
     timestamps(type: :utc_datetime)
   end
 

@@ -9,7 +9,7 @@ defmodule Ignite.ServerWeb.UserLoginLive do
       </.header>
 
       <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
-        <.input field={@form[:username]}label="Username" required />
+        <.input field={@form[:username]} label="Username" required />
         <.input field={@form[:password]} type="password" label="Password" required />
 
         <:actions>

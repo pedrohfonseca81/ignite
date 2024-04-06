@@ -112,7 +112,8 @@ defmodule Ignite.ServerWeb.UserSettingsLive do
       |> Map.put(:action, :validate)
       |> to_form()
 
-    {:noreply, assign(socket, username_form: username_form, username_form_current_password: password)}
+    {:noreply,
+     assign(socket, username_form: username_form, username_form_current_password: password)}
   end
 
   def handle_event("update_username", params, socket) do
@@ -128,7 +129,9 @@ defmodule Ignite.ServerWeb.UserSettingsLive do
         )
 
         info = "A link to confirm your username change has been sent to the new address."
-        {:noreply, socket |> put_flash(:info, info) |> assign(username_form_current_password: nil)}
+
+        {:noreply,
+         socket |> put_flash(:info, info) |> assign(username_form_current_password: nil)}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :username_form, to_form(Map.put(changeset, :action, :insert)))}

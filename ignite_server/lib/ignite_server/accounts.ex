@@ -166,9 +166,14 @@ defmodule Ignite.Server.Accounts do
       {:ok, %{to: ..., body: ...}}
 
   """
-  def deliver_user_update_username_instructions(%User{} = user, current_username, update_username_url_fun)
+  def deliver_user_update_username_instructions(
+        %User{} = user,
+        current_username,
+        update_username_url_fun
+      )
       when is_function(update_username_url_fun, 1) do
-    {encoded_token, user_token} = UserToken.build_username_token(user, "change:#{current_username}")
+    {encoded_token, user_token} =
+      UserToken.build_username_token(user, "change:#{current_username}")
 
     Repo.insert!(user_token)
     UserNotifier.deliver_update_email_instructions(user, update_username_url_fun.(encoded_token))
