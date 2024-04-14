@@ -1,85 +1,82 @@
 <!DOCTYPE html>
 <html lang="en" class="[scrollbar-gutter:stable]">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title suffix=" · Phoenix Framework">
-      <%= assigns[:page_title] || "Ignite.Server" %>
-    </.live_title>
-    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
-    </script>
-  </head>
 
-  <body class="bg-gray-900 text-white antialiased">
-    <div class="m-8 flex justify-between">
-      <div class="text-[3rem] leading-6 text-white">
-        <h3>Ignite</h3>
-      </div>
-      <div class="text-[3rem] flex gap-2 leading-6 text-white">
-        <%= if @current_user do %>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="csrf-token" content={get_csrf_token()} />
+  <.live_title suffix=" · Ignite">
+    <%= assigns[:page_title] || "Ignite.Server" %>
+  </.live_title>
+  <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+  <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+  </script>
+</head>
+
+<body class="bg-gray-900 text-white antialiased">
+  <div class="m-8 flex justify-between">
+    <div class="text-[3rem] leading-6 text-white">
+      <h3>Ignite</h3>
+    </div>
+    <div class="text-[3rem] flex gap-2 leading-6 text-white">
+      <%= if @current_user do %>
+        <div class="flex gap-2">
           <p class="text-[0.8125rem]">
             <%= @current_user.username %>
           </p>
-        <% else %>
-        <.link
-          href={~p"/users/settings"}
-          class="text-[0.8125rem] leading-6 font-semibold hover:text-zinc-700"
-        >
-          Settings
-        </.link>
-        <.link
-          href={~p"/users/log_out"}
-          method="delete"
-          class="text-[0.8125rem] leading-6 font-semibold hover:text-zinc-700"
-        >
-          Log out
-        </.link>
+          <.link href={~p"/users/settings"} class="text-[0.8125rem] leading-6 font-semibold hover:text-zinc-700">
+            Settings
+          </.link>
+          <.link href={~p"/users/log_out"} method="delete"
+            class="text-[0.8125rem] leading-6 font-semibold hover:text-zinc-700">
+            Log out
+          </.link>
+        </div>
         <% end %>
-      </div>
     </div>
-    <main>
-      <%= @inner_content %>
-    </main>
+  </div>
+  <main>
+    <%= @inner_content %>
+  </main>
 
-    <%!-- <div class="m-3">
+  <%!-- <div class="m-3">
     <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-start">
-        <li class="text-[2rem] leading-6 text-white">
-          <h3>Ignite</h3>
-        </li>
+      <li class="text-[2rem] leading-6 text-white">
+        <h3>Ignite</h3>
+      </li>
     </ul>
     <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
       <%= if @current_user do %>
-    <li class="text-[0.8125rem] leading-6 text-white">
-        <%= @current_user.username %>
-    </li>
-    <li>
-        <.link href={~p"/users/settings"} class="text-[0.8125rem] leading-6 font-semibold hover:text-zinc-700">
+        <li class="text-[0.8125rem] leading-6 text-white">
+          <%= @current_user.username %>
+        </li>
+        <li>
+          <.link href={~p"/users/settings"} class="text-[0.8125rem] leading-6 font-semibold hover:text-zinc-700">
             Settings
-        </.link>
-    </li>
-    <li>
-        <.link href={~p"/users/log_out"} method="delete"
+          </.link>
+        </li>
+        <li>
+          <.link href={~p"/users/log_out"} method="delete"
             class="text-[0.8125rem] leading-6 font-semibold hover:text-zinc-700">
             Log out
-        </.link>
-    </li>
-    <% else %>
-    <li>
-        <.link href={~p"/users/register"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700">
-            Register
-        </.link>
-    </li>
-    <li>
-        <.link href={~p"/users/log_in"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700">
-            Log in
-        </.link>
-    </li>
-    <% end %>
+          </.link>
+        </li>
+        <% else %>
+          <li>
+            <.link href={~p"/users/register"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700">
+              Register
+            </.link>
+          </li>
+          <li>
+            <.link href={~p"/users/log_in"}
+              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700">
+              Log in
+            </.link>
+          </li>
+          <% end %>
     </ul>
     </div> --%>
-  </body>
+</body>
+
 </html>

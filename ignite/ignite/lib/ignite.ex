@@ -1,2 +1,0 @@
-defmodule Ignite do
-end
