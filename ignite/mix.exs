@@ -27,7 +27,8 @@ defmodule Ignite.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:gen_stage, "~> 1.2.1"}
+      {:gen_stage, "~> 1.2.1"},
+      {:crontab, "~> 1.1"}
     ]
   end
 end

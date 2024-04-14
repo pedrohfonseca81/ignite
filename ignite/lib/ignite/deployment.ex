@@ -1,4 +1,6 @@
 defmodule Ignite.Deployment do
+  import Crontab.CronExpression
+  alias Crontab.CronExpression.Parser
   alias Ignite.Api.Deploy
 
   defstruct [
@@ -28,19 +30,31 @@ defmodule Ignite.Deployment do
     end
   end
 
-  defmacro deploy(flow, options) do
-    do_deploy(flow, options)
+  defmacro deploy(flow, call) do
+    do_deploy(flow, call)
   end
 
-  defp do_deploy(flow, options) do
+  defp do_deploy(flow, call) do
+    {_, _, options} = call
+
+    cron = Macro.escape(parse_cron(options[:cron]))
+
     quote do
       unquote(__MODULE__).__define__(__MODULE__, :deployments, %Ignite.Deployment{
         flow: unquote(flow),
         name: unquote(options)[:name],
         schedule: unquote(options)[:schedule],
-        cron: unquote(options)[:cron],
-        tags: unquote(options)[:tags]
+        cron: unquote(cron),
+        tags: unquote(options)[:tags],
+        worker: unquote(options)[:worker]
       })
+    end
+  end
+
+  defp parse_cron(cron) do
+    case Parser.parse(cron) do
+      {:ok, cron} -> cron
+      {:error, message} -> :invalid_cron
     end
   end
 
