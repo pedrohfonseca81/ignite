@@ -9,7 +9,7 @@ defmodule Ignite.Deployment do
     :cron,
     :tags,
     :flow,
-    :worker
+    worker: :local
   ]
 
   defmacro __using__(_options) do
