@@ -39,6 +39,12 @@ defmodule Ignite.ServerWeb.Router do
     end
   end
 
+  scope "/deployments", Ignite.ServerWeb do
+    pipe_through :api
+
+    get "/", DeploymentsController, :index
+  end
+
   ## Authentication routes
 
   scope "/", Ignite.ServerWeb do
