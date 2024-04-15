@@ -5,6 +5,6 @@ defmodule Ignite.ServerWeb.DeploymentsController do
   alias Ignite.ServerWeb.UserAuth
 
   def index(conn, _params) do
-      json(conn, %{test: "123"})
+
   end
 end
