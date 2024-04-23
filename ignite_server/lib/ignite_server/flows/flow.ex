@@ -1,9 +1,10 @@
-defmodule Ignite.Server.Deployment do
+defmodule Ignite.Server.Flows.Flow do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "deployments" do
-    field :status, :string
+  @params []
+
+  schema "flows" do
 
     timestamps(type: :utc_datetime)
   end
@@ -11,7 +12,7 @@ defmodule Ignite.Server.Deployment do
   @doc false
   def changeset(deployment, attrs) do
     deployment
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, @params)
+    |> validate_required(@params)
   end
 end

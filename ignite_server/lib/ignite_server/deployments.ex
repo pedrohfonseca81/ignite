@@ -53,6 +53,7 @@ defmodule Ignite.Server.Deployments do
     %Deployment{}
     |> Deployment.changeset(attrs)
     |> Repo.insert()
+    |> IO.inspect()
   end
 
   @doc """

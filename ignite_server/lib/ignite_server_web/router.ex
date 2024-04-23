@@ -43,6 +43,7 @@ defmodule Ignite.ServerWeb.Router do
     pipe_through :api
 
     get "/", DeploymentsController, :index
+    post "/", DeploymentsController, :create
   end
 
   ## Authentication routes
