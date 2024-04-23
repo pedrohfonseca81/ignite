@@ -6,7 +6,7 @@ defmodule Ignite.Server.Repo.Migrations.CreateDeployments do
       add(:name, :string)
       add(:schedule, :timestamp)
       add(:cron, :string)
-      add(:flow, references(:flows))
+      add(:flow_id, references(:flows))
       add(:worker, :string)
 
       timestamps(type: :utc_datetime)
