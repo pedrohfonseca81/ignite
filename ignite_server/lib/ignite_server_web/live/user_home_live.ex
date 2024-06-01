@@ -1,6 +1,7 @@
 defmodule Ignite.ServerWeb.UserHomeLive do
   alias Ignite.Server.Deployments
   alias Ignite.Server.Repo
+  alias Ignite.Server.Worker
   use Ignite.ServerWeb, :live_view
 
   def render(assigns) do
@@ -15,7 +16,7 @@ defmodule Ignite.ServerWeb.UserHomeLive do
               <div>
                 <div class="flex justify-between">
                   <p><%= deployment.name %></p>
-                  <.button phx-click="run_deployment" phx-value-id={deployment.id}>
+                  <.button phx-click="run_deployment" phx-value-id={deployment.id} phx-value-worker={deployment.worker}>
                     Run
                     <.icon name="hero-chevron-right-mini" class="mt-0.5 h-5 w-5 flex-none" />
                   </.button>
@@ -38,8 +39,8 @@ defmodule Ignite.ServerWeb.UserHomeLive do
     """
   end
 
-  def handle_event("run_deployment", %{"id" => id}, socket) do
-    # TO DO
+  def handle_event("run_deployment", %{"id" => id, "worker" => worker}, socket) do
+    Worker.run(%{name: worker, deployment: id})
 
     {:noreply, socket}
   end
