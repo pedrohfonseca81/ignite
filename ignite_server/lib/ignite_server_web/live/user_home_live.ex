@@ -1,5 +1,6 @@
 defmodule Ignite.ServerWeb.UserHomeLive do
   alias Ignite.Server.Deployments
+  alias Ignite.Server.Repo
   use Ignite.ServerWeb, :live_view
 
   def render(assigns) do
@@ -9,7 +10,7 @@ defmodule Ignite.ServerWeb.UserHomeLive do
         Deployments
       </.header> --%>
       <div>
-        <%= for deployment <- Deployments.list_deployments() do %>
+        <%= for deployment <- Repo.preload(Deployments.list_deployments(), [:tags]) do %>
           <div class="shadow-sm p-4 my-2 rounded border-l-4 border-red-700">
               <div>
                 <div class="flex justify-between">
@@ -21,6 +22,13 @@ defmodule Ignite.ServerWeb.UserHomeLive do
                 </div>
                 <div>
                   <span><%= deployment.inserted_at %></span>
+                  <div>
+                    <%= for tag <- deployment.tags do %>
+                      <span class="bg-red-700 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-700 dark:text-white">
+                      <%= tag.name %>
+                      </span>
+                    <% end %>
+                  </div>
                 </div>
               </div>
           </div>
