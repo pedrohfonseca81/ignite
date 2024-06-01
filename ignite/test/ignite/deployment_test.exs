@@ -46,4 +46,8 @@ defmodule Ignite.DeploymentTest do
 
     assert tag == "Development"
   end
+
+  test "deploy flows supervised" do
+    assert match?({:ok, _}, start_supervised({Deployment, "http://localhost:4000"}))
+  end
 end

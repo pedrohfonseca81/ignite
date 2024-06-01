@@ -1,5 +1,4 @@
 defmodule Ignite.Deployment do
-  import Crontab.CronExpression
   alias Crontab.CronExpression.Parser
   alias Ignite.Api.Deploy
 
@@ -12,11 +11,36 @@ defmodule Ignite.Deployment do
     worker: :local
   ]
 
+  defimpl Jason.Encoder do
+    def encode(value, opts) do
+      Jason.Encode.map(Map.from_struct(value), opts)
+    end
+  end
+
   defmacro __using__(_options) do
     quote do
+      use GenServer
+      import unquote(__MODULE__)
+
       Module.register_attribute(__MODULE__, :deployments, accumulate: true)
 
-      import unquote(__MODULE__)
+      def start_link(hostname) when is_binary(hostname) do
+        create_deployment(hostname)
+
+        GenServer.start_link(__MODULE__, hostname, name: __MODULE__)
+      end
+
+      def start_link(_) do
+        hostname = "http://localhost:4000"
+
+        create_deployment(hostname)
+
+        GenServer.start_link(__MODULE__, hostname, name: __MODULE__)
+      end
+
+      def init(state) do
+        {:ok, state}
+      end
 
       @before_compile unquote(__MODULE__)
     end
@@ -26,7 +50,7 @@ defmodule Ignite.Deployment do
     quote do
       def spec(), do: @deployments
 
-      def create_deployment(), do: Deploy.new(@deployments)
+      def create_deployment(server), do: Deploy.new(Req.new(base_url: server), @deployments)
     end
   end
 

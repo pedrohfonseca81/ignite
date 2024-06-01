@@ -14,6 +14,12 @@ defmodule Ignite.Flow do
     :dict
   ]
 
+  defimpl Jason.Encoder do
+    def encode(value, opts) do
+      Jason.Encode.map(Map.from_struct(value), opts)
+    end
+  end
+
   defmacro __using__(_options) do
     quote do
       @behaviour unquote(__MODULE__)

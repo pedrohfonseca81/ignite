@@ -28,7 +28,8 @@ defmodule Ignite.MixProject do
   defp deps do
     [
       {:gen_stage, "~> 1.2.1"},
-      {:crontab, "~> 1.1"}
+      {:crontab, "~> 1.1"},
+      {:req, "~> 0.4.0"}
     ]
   end
 end
