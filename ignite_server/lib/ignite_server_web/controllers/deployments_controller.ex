@@ -11,11 +11,10 @@ defmodule Ignite.ServerWeb.DeploymentsController do
     json(conn, deployments)
   end
 
-  def create(conn, params) do
-    IO.inspect(params)
+  def create(conn, %{"_json" => params}) do
     case Deployments.create_deployment(params) do
       {:ok, deployment} ->
-        json(conn, %{"deployment" => deployment.id})
+        json(conn, params)
 
       {:error, changeset} ->
         conn

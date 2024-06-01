@@ -4,7 +4,7 @@ defmodule Ignite.Server.Repo.Migrations.CreateTags do
   def change do
     create table(:tags) do
       add :name, :string
-      add :deployment, references(:deployments)
+      add :deployment_id, references(:deployments)
 
       timestamps(type: :utc_datetime)
     end

@@ -50,10 +50,14 @@ defmodule Ignite.Server.Deployments do
 
   """
   def create_deployment(attrs \\ %{}) do
-    %Deployment{}
-    |> Deployment.changeset(attrs)
-    |> Repo.insert()
-    |> IO.inspect()
+    changesets = Enum.map(attrs, fn x ->
+      %Deployment{}
+      |> Deployment.changeset(x)
+    end)
+
+    Repo.transaction(fn ->
+      Enum.each(changesets, &Repo.insert(&1, on_conflict: :nothing))
+    end)
   end
 
   @doc """

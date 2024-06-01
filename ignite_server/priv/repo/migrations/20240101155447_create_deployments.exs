@@ -11,5 +11,7 @@ defmodule Ignite.Server.Repo.Migrations.CreateDeployments do
 
       timestamps(type: :utc_datetime)
     end
+
+    create unique_index(:deployments, [:name])
   end
 end
