@@ -15,8 +15,8 @@
 
 <body class="bg-gray-900 text-white antialiased">
   <div class="m-8 flex justify-between">
-    <div class="text-[3rem] leading-6 text-white">
-      <h3>Ignite</h3>
+    <div class="text-[2.5rem] leading-6 text-white">
+      <p>Ignite</p>
     </div>
     <div class="text-[3rem] flex gap-2 leading-6 text-white">
       <%= if @current_user do %>
@@ -38,45 +38,6 @@
   <main>
     <%= @inner_content %>
   </main>
-
-  <%!-- <div class="m-3">
-    <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-start">
-      <li class="text-[2rem] leading-6 text-white">
-        <h3>Ignite</h3>
-      </li>
-    </ul>
-    <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
-      <%= if @current_user do %>
-        <li class="text-[0.8125rem] leading-6 text-white">
-          <%= @current_user.username %>
-        </li>
-        <li>
-          <.link href={~p"/users/settings"} class="text-[0.8125rem] leading-6 font-semibold hover:text-zinc-700">
-            Settings
-          </.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log_out"} method="delete"
-            class="text-[0.8125rem] leading-6 font-semibold hover:text-zinc-700">
-            Log out
-          </.link>
-        </li>
-        <% else %>
-          <li>
-            <.link href={~p"/users/register"}
-              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700">
-              Register
-            </.link>
-          </li>
-          <li>
-            <.link href={~p"/users/log_in"}
-              class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700">
-              Log in
-            </.link>
-          </li>
-          <% end %>
-    </ul>
-    </div> --%>
 </body>
 
 </html>
